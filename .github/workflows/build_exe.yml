@@ -15,5 +15,5 @@ jobs:
         python-version: '3.11' 
     - run: pip install poetry
     - run: poetry install
-    - run: poetry run pyinstaller console-app.spec
+    - run: poetry run pyinstaller ./console-app.spec
     # - run: gh release upload ${{ github.event.release.tag_name }} ./dist/Tungeon.exe
