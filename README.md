@@ -2,7 +2,9 @@
 
 ## Configuration
 
-see [config](./help/instruction.md)
+Playing the game requires a world to be played in. You can define the world in a config folder.
+
+For a detailed explaination on how to set up such a configuration see [config](./help/instruction.md)
 
 ## Development
 
