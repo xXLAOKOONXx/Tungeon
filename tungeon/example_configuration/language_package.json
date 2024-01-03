@@ -1,0 +1,12 @@
+{
+    "yes":"Ja",
+    "no":"Nein",
+    "faulty-input":"Fehlerhafte Eingabe",
+    "select":"Waehle",
+    "fight-melee-question":"Soll der Held im Nahkampf kaempfen?",
+    "your-dice-throw":"Hier ist euer Wuerfelwurf:",
+    "change-dice-question":"Wollt ihr einen Wuerfel aendern?",
+    "change-dice-select":"Welchen Wuerfel wollt Ihr aendern?",
+    "use-item":"Moechtet Ihr einen Gegenstand einsetzen?",
+    "wanna-prep":"Moechtet Ihr euch vorbereiten?"
+}

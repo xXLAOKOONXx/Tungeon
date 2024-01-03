@@ -1,0 +1,58 @@
+[
+    {
+        "name":"Einfach",
+        "display-name":"Einfache Belohnungen",
+        "description":"Einfache Belohnungen",
+        "rewards":
+        [
+            {
+                "values":[0],
+                "items":[
+                    "Flusen"
+                ]
+            },
+            {
+                "values":[1,2,3,4,5],
+                "money":1
+            },
+            {
+                "values":[6,7,8],
+                "money":2
+            },
+            {
+                "values":[9],
+                "money":10
+            },
+            {
+                "values":[10],
+                "money":1,
+                "rewardset-draws":[
+                    {
+                        "rewardset-name":"Erweitert",
+                        "draw-d10-count":1,
+                        "draw-base":0
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name":"Erweitert",
+        "display-name":"Erweiterte Belohnungen",
+        "description":"Erweiterte Belohnungen",
+        "rewards":[
+            {
+                "values":[1,2,3],
+                "money":5
+            },
+            {
+                "values":[4,5,6],
+                "money":25
+            },
+            {
+                "values":[7,8,9,10],
+                "money":70
+            }
+        ]
+    }
+]

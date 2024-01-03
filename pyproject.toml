@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "tungeon"
+version = "0.1.0"
+description = ""
+authors = ["t"]
+
+[tool.poetry.dependencies]
+python = "3.11"
+
+[tool.poetry.dev-dependencies]
+pyinstaller = "^5.9.0"
+Sphinx = "^7.2.6"
+sphinx-rtd-theme = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

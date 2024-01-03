@@ -1,0 +1,232 @@
+[
+    {
+        "name":"strength-motivation",
+        "display-name":"Motivation der Muskeln",
+        "description":"Der Held kann versuchen einen beliebigen Helden zu motivieren und damit dessen Staerke verbessern.",
+        "functions":[
+            {
+                "condition-type":"round-preperation",
+                "function-groups":["music"],
+                "strength-bonus":1,
+                "additional-rounds":0,
+                "other-hero-allowed":true,
+                "base-skill-check":{
+                    "is-intelligence":true,
+                    "check-modifier":0,
+                    "check-types":[]
+                }
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"agility-motivation",
+        "display-name":"Motivation der Agilitaet",
+        "description":"Der Held kann versuchen einen beliebigen Helden zu motivieren und damit dessen Agilitaet verbessern.",
+        "functions":[
+            {
+                "condition-type":"round-preperation",
+                "function-groups":["music"],
+                "agility-bonus":1,
+                "additional-rounds":0,
+                "other-hero-allowed":true,
+                "base-skill-check":{
+                    "is-intelligence":true,
+                    "check-modifier":0,
+                    "check-types":[]
+                }
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"intelligence-motivation",
+        "display-name":"Motivation der Denkfaehigkeit",
+        "description":"Der Held kann versuchen einen beliebigen Helden zu motivieren und damit dessen Intelligenz verbessern.",
+        "functions":[
+            {
+                "condition-type":"round-preperation",
+                "function-groups":["music"],
+                "intelligence-bonus":1,
+                "additional-rounds":0,
+                "other-hero-allowed":true,
+                "base-skill-check":{
+                    "is-intelligence":true,
+                    "check-modifier":0,
+                    "check-types":[]
+                }
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"ausdauer",
+        "display-name":"Ausdauer",
+        "description":"Der Held kann mit einer Verletzung mehr aktiv sein.",
+        "functions":[
+            {
+                "wound-resistance":1
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"uberleben",
+        "display-name":"Ueberleben",
+        "description":"Der Held bleibt mit einer Verletzung mehr am Leben.",
+        "functions":[
+            {
+                "death-wound-resistance":1
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"uberleben_ausdauer",
+        "display-name":"Uberlebende Ausdauer",
+        "description":"Der Held kann mit einer Verletzung mehr aktiv sein und bleibt auch mit einer Verletzung mehr am Leben.",
+        "functions":[
+            {
+                "wound-resistance":1
+            },
+            {
+                "death-wound-resistance":1
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"erholung",
+        "display-name":"Erholung",
+        "description":"Der Held kann eine Wunde am Start der Runde erholen, wenn er stark genug dafuer ist.",
+        "functions":[
+            {
+                "condition-type":"round-preperation",
+                "wound-reduce":1,
+                "base-skill-check":{
+                    "is-strength":true,
+                    "check-modifier":0,
+                    "check-types":[]
+                }
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"kampftaktik",
+        "display-name":"Kampftaktik",
+        "description":"Der Held kann sich mit seiner Intelligenz auf einen optionalen Kampf vorbereiten und hat im Kampf einen Bonus im vorbeugen von Verletzungen.",
+        "functions":[
+            {
+                "condition-type":"fight",
+                "fight-voluntary-required":true,
+                "fight-type":"melee",
+                "resistance-bonus":1,
+                "base-skill-check":{
+                    "is-intelligence":true,
+                    "check-modifier":0,
+                    "check-types":["intelligence", "fight-related"]
+                }
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"Rundumschlag",
+        "display-name":"Rundumschlag",
+        "description":"Fuege im Nahkampf mehr Schaden hinzu, wenn die Gegner wenigstens zu viert sind.",
+        "functions":[
+            {
+                "condition-type":"fight",
+                "fight-enemy-min":4,
+                "fight-type":"melee",
+                "fight-flat-bonus":1
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"Dolchstoss",
+        "display-name":"Dolchstoss",
+        "description":"Durchsteche die Ruestung deines Feindes.",
+        "functions":[
+            {
+                "condition-type":"fight",
+                "fight-type":"melee",
+                "resistance-passing":2,
+                "resistance-surpassing":false
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"meist.Rundumschlag",
+        "display-name":"Meisterlicher Rundumschlag",
+        "description":"Fuege im Nahkampf mehr Schaden hinzu, wenn die Gegner wenigstens zu viert sind.",
+        "functions":[
+            {
+                "condition-type":"fight",
+                "fight-enemy-min":4,
+                "fight-type":"melee",
+                "fight-flat-bonus":1
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1,
+        "learning-required-skills":["Rundumschlag"],
+        "learning-removes-skills":["Rundumschlag"],
+        "other-skill-prevention":["Rundumschlag"]
+    },
+    {
+        "name":"Sturmangriff",
+        "display-name":"Sturmangriff",
+        "description":"Greife vorbereitet im Nahkampf an, um mehr Schaden zu machen",
+        "functions":[
+            {                
+                "condition-type":"fight",
+                "fight-voluntary-required":true,
+                "fight-rounds":[1],
+                "fight-type":"melee",
+                "fight-flat-bonus":1
+            }
+        ]
+    },
+    {
+        "name":"Praeziser Schuss",
+        "display-name":"Praeziser Schuss",
+        "description":"Greife vorbereitet im Fernkampf an, um mehr Schaden zu machen",
+        "functions":[
+            {                
+                "condition-type":"fight",
+                "fight-voluntary-required":true,
+                "fight-type":"ranged",
+                "fight-flat-bonus":1
+            }
+        ]
+    },
+    {
+        "name":"prevent-danger",
+        "display-name":"Fallenkunde",
+        "description":"Versuche Fallen zu umgehen",
+        "functions":[
+            {                
+                "is-prevent-trap":true,
+                "base-skill-check":{
+                    "is-agility":true,
+                    "check-modifier":0,
+                    "check-types":["search"]
+                }
+            }
+        ]
+    }
+]
