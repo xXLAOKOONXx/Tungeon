@@ -17,4 +17,4 @@ jobs:
     - run: poetry run pyinstaller console-app.spec
     - run: gh release upload ${{ github.event.release.tag_name }} dist\Tungeon.exe
       env:
-        GH_TOKEN: ${{ github.token }}
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
