@@ -137,7 +137,12 @@ class GameConfiguration:
                 raise ValueError(f'Configurationfile for language_package is faulty, should be json object, please check {filepath}')
             self._language_package = LanguagePackage(j)
         return self._language_package
+    
+_game_config = None
 
 def set_game_config(configuration_folder):
-    global game_config
-    game_config = GameConfiguration(configuration_folder)
+    global _game_config
+    _game_config = GameConfiguration(configuration_folder)
+
+def game_config() -> GameConfiguration:
+    return _game_config

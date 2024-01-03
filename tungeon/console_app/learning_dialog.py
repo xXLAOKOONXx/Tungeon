@@ -14,7 +14,7 @@ def _has_enough(skill:LearnSkill, max_money, max_points, is_doubled=False):
     return skill.money * factor <= max_money and skill.points * factor <= max_points
 def _shop_entry(skill:LearnSkill, is_double:bool):
     factor = 1 if not is_double else 2
-    return f'{config_finder.get_skill(skill.skill_name).display_name} ({skill.points * factor} {game_config.language_package.improvement_points}, {skill.money * factor} {game_config.language_package.money})'
+    return f'{config_finder.get_skill(skill.skill_name).display_name} ({skill.points * factor} {game_config().language_package.improvement_points}, {skill.money * factor} {game_config().language_package.money})'
  
 
 def perform_teacher_learning(company:Company, hero:Hero, learnable_skills:list[LearnSkill]) -> bool:
@@ -30,14 +30,14 @@ def perform_teacher_learning(company:Company, hero:Hero, learnable_skills:list[L
     
    
     if too_expensive_skills:
-        print(game_config.language_package.not_enough_res_for)
+        print(game_config().language_package.not_enough_res_for)
         for skill in too_expensive_skills:
             print(_shop_entry(skill, skill.skill_name in hero_profession.double_price_skills))
     if not actual_available_skills:
-        print(game_config.language_package.nothing_to_learn)
+        print(game_config().language_package.nothing_to_learn)
         return False
-    selected_skill = helpers.select_option(game_config.language_package.which_skill_learn, [game_config.language_package.no_skill] + [_shop_entry(skill, skill.skill_name in hero_profession.double_price_skills) for skill in actual_available_skills])
-    if selected_skill == game_config.language_package.no_skill:
+    selected_skill = helpers.select_option(game_config().language_package.which_skill_learn, [game_config().language_package.no_skill] + [_shop_entry(skill, skill.skill_name in hero_profession.double_price_skills) for skill in actual_available_skills])
+    if selected_skill == game_config().language_package.no_skill:
         return False
     selected_skill = [skill for skill in actual_available_skills if _shop_entry(skill, skill.name in hero_profession.double_price_skills) == selected_skill][0]
     factor = 1
@@ -48,8 +48,8 @@ def perform_teacher_learning(company:Company, hero:Hero, learnable_skills:list[L
     hero.skills.append(selected_skill.skill_name)
     for skill_name in config_finder.get_skill(selected_skill.skill_name).learning_removes_skills:
         hero.skills.remove(skill_name)
-        print(game_config.language_package.skill_no_longer.format(hero_name=hero.name, skill_name=config_finder.get_skill(skill_name).display_name))
-    print(game_config.language_package.learned_skill.format(
+        print(game_config().language_package.skill_no_longer.format(hero_name=hero.name, skill_name=config_finder.get_skill(skill_name).display_name))
+    print(game_config().language_package.learned_skill.format(
         hero_name=hero.name,
         skill_name=selected_skill.display_name
     ))

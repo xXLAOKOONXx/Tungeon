@@ -17,7 +17,7 @@ def determine_hero_is_melee(hero:Hero) -> bool:
     if not can_ranged:
         return True
     print(str(hero))
-    return helpers.select_yes_no(text=f'{hero.name}: {game_config.language_package.fight_melee_question}')
+    return helpers.select_yes_no(text=f'{hero.name}: {game_config().language_package.fight_melee_question}')
     
 
 def determine_is_melee(heroes:list[Hero]):
@@ -64,22 +64,22 @@ def perform_fight(company:Company, fight:RegionEventStep, region_name:str) -> in
         determine_is_melee(company.heroes)
     for i in range(0,3):
         condition.fight_round = i + 1
-        print(game_config.language_package.round_msg.format(round=i+1))
+        print(game_config().language_package.round_msg.format(round=i+1))
         fight_result = fight_round(company, fight, region_name)
         if not fight_result.is_tie:
             break
     if fight_result.is_tie:
-        print(game_config.language_package.fight_tie)
+        print(game_config().language_package.fight_tie)
         reset_condition()
         return fight.fight_tie or fight.next_step
     if fight_result.is_win:
-        print(game_config.language_package.fight_win)
+        print(game_config().language_package.fight_win)
         reset_condition()
         return fight.fight_win or fight.next_step
     if fight_result.is_loose:
-        print(game_config.language_package.fight_loose)
+        print(game_config().language_package.fight_loose)
         applied_wounds = fightingsystem.apply_damage_on_players(company.heroes, strength_delta=fight_result.strength_delta)
-        print(game_config.language_package.receive_wounds.format(wounds=applied_wounds))
+        print(game_config().language_package.receive_wounds.format(wounds=applied_wounds))
         reset_condition()
         return fight.fight_loose or fight.next_step
     

@@ -11,7 +11,7 @@ def draw_reward(settings:RewardDraw) -> Tuple[int, list[str]]:
     - items(list[str]): List of item names
     '''
     
-    filtered_rewardsets = [set for set in game_config.reward_sets if set.name == settings.rewardset_name]
+    filtered_rewardsets = [set for set in game_config().reward_sets if set.name == settings.rewardset_name]
     if len(filtered_rewardsets) != 1:
         raise ValueError(f'Unable to uniquely identify {settings.rewardset_name} in game configuration')
     rewardset = filtered_rewardsets[0]

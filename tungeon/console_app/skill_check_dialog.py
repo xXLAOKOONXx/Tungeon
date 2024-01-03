@@ -16,19 +16,19 @@ def perform_base_skill_check(hero:Hero, check:BaseSkillCheck, region_name:str) -
     skill_name = ''
     skill_value = 0
     if check.is_agility:
-        skill_name = game_config.language_package.agility
+        skill_name = game_config().language_package.agility
         skill_value = hero.agility
     if check.is_speed:
-        skill_name = game_config.language_package.speed
+        skill_name = game_config().language_package.speed
         skill_value = hero.speed
     if check.is_strength:
-        skill_name = game_config.language_package.strength
+        skill_name = game_config().language_package.strength
         skill_value = hero.strength
     if check.is_intelligence:
-        skill_name = game_config.language_package.intelligence
+        skill_name = game_config().language_package.intelligence
         skill_value = hero.intelligence
     
-    print(game_config.language_package.skill_check_info.format(
+    print(game_config().language_package.skill_check_info.format(
         skill_name=skill_name,
         skill_value=skill_value,
         check_modifier=check.check_modifier,
@@ -36,7 +36,7 @@ def perform_base_skill_check(hero:Hero, check:BaseSkillCheck, region_name:str) -
     ))
 
     if skill_value + check.check_modifier < 1:
-        print(game_config.language_package.skill_check_auto_no)
+        print(game_config().language_package.skill_check_auto_no)
         return None
     
     dice_roll = helpers.roll_hero_dice(hero, check.check_types, region_name)
