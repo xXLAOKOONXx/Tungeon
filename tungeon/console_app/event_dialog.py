@@ -7,6 +7,7 @@ from tungeon.data.company import Company
 from tungeon.console_app import fighting_dialog, inventory_dialog, helpers, learning_dialog
 from tungeon.logics import rewardsystem, functionality_system, config_finder, hero_actions
 from tungeon.data.condition import condition
+from tungeon.config.game_config import game_config
 
 @dataclass
 class RegionJump():
@@ -20,8 +21,8 @@ def perform_trap(company:Company, step:RegionEventStep) -> int | None:
         trap_skills:list[Skill] =  [config_finder.get_skill(s) for s in hero.skills if any([f.is_prevent_trap and functionality_system.check_conditions_met(f,hero) for f in config_finder.get_skill(s).functions])]
         used_skills = []
         while [s for s in trap_skills if s.name not in used_skills]:
-            selected_skill_display_name = helpers.select_option(f'Welche Fähigkeit von {hero.name} möchtest du nutzen?', ['Keine'] + [s.display_name for s in trap_skills if s.name not in used_skills])
-            if selected_skill_display_name == 'Keine':
+            selected_skill_display_name = helpers.select_option(game_config.language_package.which_skill.format(hero_name=hero.name), [game_config.language_package.no_skill] + [s.display_name for s in trap_skills if s.name not in used_skills])
+            if selected_skill_display_name == game_config.language_package.no_skill:
                 break
             selected_skill = [s for s in trap_skills if s.display_name == selected_skill_display_name][0]
             condition.get_hero_condition(hero.name).used_skill_groups += selected_skill.function_groups
@@ -33,8 +34,8 @@ def perform_trap(company:Company, step:RegionEventStep) -> int | None:
         trap_items = [t for t in trap_items if any([f.is_prevent_trap and functionality_system.check_conditions_met(f,hero) for f in t.functions])]
         used_items = []
         while [t for t in trap_items if t.name not in used_items]:
-            selected_items_display_name = helpers.select_option(f'Welchen Gegenstand soll {hero.name} nutzen?', ['Keinen'] + [t.display_name for t in trap_items])
-            if selected_skill_display_name == 'Keine':
+            selected_items_display_name = helpers.select_option(game_config.language_package.which_item.format(hero_name=hero.name), [game_config.language_package.no_item] + [t.display_name for t in trap_items])
+            if selected_skill_display_name == game_config.language_package.no_item:
                 break
             selected_item = [t for t in trap_items if t.display_name == selected_items_display_name][0]
             for f in selected_item.functions:
@@ -56,9 +57,9 @@ def perform_random(step:RegionEventStep) -> int | None:
 
 def perform_learn_skill(company:Company, step:RegionEventStep) -> int | None:
     learned = False
-    hero_options = ['Keiner'] + [h.name for h in company.heroes if h.profession in step.required_professions]
-    selected_hero_name = helpers.select_option('Welcher Held soll lernen dürfen?', hero_options)
-    if selected_hero_name == 'Keiner':
+    hero_options = [game_config.language_package.no_hero] + [h.name for h in company.heroes if h.profession in step.required_professions]
+    selected_hero_name = helpers.select_option(game_config.language_package.which_hero_learns, hero_options)
+    if selected_hero_name == game_config.language_package.no_hero:
         return step.no
     hero = company.get_hero(selected_hero_name)
     learned = learning_dialog.perform_teacher_learning(company, hero, step.learn_skills)
@@ -71,7 +72,7 @@ def perform_reward(company:Company, step:RegionEventStep) -> int | None:
     total_money = step.reward_gold or 0
     total_items = step.reward_items
     if step.reward_improvement_points:
-        print(f'Ihr erhaltet {step.reward_improvement_points} Steigerungspunkte.')
+        print(game_config.language_package.receive_points.format(points=step.reward_improvement_points))
         company.add_improvement_points(step.reward_improvement_points)
     if step.reward_draws:
         total_draw_money = 0

@@ -9,8 +9,6 @@ from tungeon.config.game_config import game_config
 import random
 
 
-LOCATIONS = Literal['melee','ranged','shield','armor','active','backpack']
-
 def perform_steal(company:Company, step:RegionEventStep) -> int | None:
     if step.text:
         print(step.text)
@@ -46,53 +44,53 @@ def perform_steal(company:Company, step:RegionEventStep) -> int | None:
 
     steal_type = random.sample(available_steal_types, 1)[0]
     if steal_type == 'money':
-        print(f'All das Gold ({hero.money}) von {hero.name} wurde gestohlen.')
+        print(game_config.language_package.lost_money.format(money=hero.money, hero_name=hero.name))
         hero.money = 0
     if steal_type == 'melee':
         if hero.melee_weapon is None:
-            print(f'{hero.name} hätte fast seine Nahkampfwaffe verloren, aber er hat gar keine.')
+            game_config.language_package.lost_almost_melee.format(hero_name=hero.name)
             return step.no
-        print(f'{hero.name} hat seine Waffe {config_finder.get_item(hero.melee_weapon).display_name} verloren.')
+        print(game_config.language_package.lost_melee.format(hero_name=hero.name, item_name=config_finder.get_item(hero.melee_weapon).display_name))
         hero.melee_weapon = None
     if steal_type == 'ranged':
         if hero.ranged_weapon is None:
-            print(f'{hero.name} hätte fast seine Fernkampfwaffe verloren, aber er hat gar keine.')
+            game_config.language_package.lost_almost_ranged.format(hero_name=hero.name)
             return step.no
-        print(f'{hero.name} hat seine Waffe {config_finder.get_item(hero.ranged_weapon).display_name} verloren.')
-        hero.melee_weapon = None
+        print(game_config.language_package.lost_ranged.format(hero_name=hero.name, item_name=config_finder.get_item(hero.ranged_weapon).display_name))
+        hero.ranged_weapon = None
     if steal_type == 'shield':
         if hero.shield is None:
-            print(f'{hero.name} hätte fast seinen Schild verloren, aber er hat gar keine.')
+            game_config.language_package.lost_almost_shield.format(hero_name=hero.name)
             return step.no
-        print(f'{hero.name} hat seinen Schild {config_finder.get_item(hero.shield).display_name} verloren.')
-        hero.melee_weapon = None
+        print(game_config.language_package.lost_shield.format(hero_name=hero.name, item_name=config_finder.get_item(hero.shield).display_name))
+        hero.shield = None
     if steal_type == 'armor':
         if hero.armor is None:
-            print(f'{hero.name} hätte fast seine Rüstung verloren, aber er hat gar keine.')
+            game_config.language_package.lost_almost_armor.format(hero_name=hero.name)
             return step.no
-        print(f'{hero.name} hat seine Rüstung {config_finder.get_item(hero.armor).display_name} verloren.')
-        hero.melee_weapon = None
+        print(game_config.language_package.lost_armor.format(hero_name=hero.name, item_name=config_finder.get_item(hero.armor).display_name))
+        hero.armor = None
     if steal_type == 'active':
         active_draw = random.randint(0, len(hero.active_items) if not step.can_miss else hero.active_item_slots)
         if active_draw >= len(hero.active_items):
-            print(f'{hero.name} hätte fast einen aktiven Gegenstand verloren, aber der Dieb griff daneben.')
+            game_config.language_package.lost_almost_active_item.format(hero_name=hero.name)
             return step.no
         dropped_item_name = hero.active_items.pop(active_draw)
-        print(f'{hero.name} hat {config_finder.get_item(dropped_item_name)} aus seinen aktiven Gegenständen verloren.')
+        print(game_config.language_package.lost_active_item.format(hero_name=hero.name, item_name=config_finder.get_item(dropped_item_name).display_name))
     if steal_type == 'backpack':
         if not hero.backpack_items:
-            print(f'{hero.name} hat seinen Rucksack verloren, aber er war leer.')
+            game_config.language_package.lost_empty_backpack.format(hero_name=hero.name)
             return step.no
         if step.backpack_parts:
             active_draw = random.randint(0, len(hero.backpack_items))
             if active_draw >= len(hero.backpack_items):
-                print(f'{hero.name} hätte fast einen aktiven Gegenstand verloren, aber der Dieb griff daneben.')
+                print(game_config.language_package.lost_backpack_item.format(hero_name=hero.name, item_name=config_finder.get_item(hero.armor).display_name))
                 return step.no
             dropped_item_name = hero.backpack_items.pop(active_draw)
-            print(f'{hero.name} hat {config_finder.get_item(dropped_item_name)} aus seinen Rucksack verloren.')
+            print(game_config.language_package.lost_backpack_item.format(hero_name=hero.name, item_name=config_finder.get_item(dropped_item_name)))
         else:
-            print(f'{hero.name} hat seinen gesamten Rucksack verloren.')
-            print(hero.backpack_str)
+            print(game_config.language_package.lost_backpack.format(hero_name=hero.name))
+            print(hero.backpack_str())
             hero.backpack_items = []
     return step.yes
 
@@ -109,17 +107,17 @@ def pay_money(company:Company, amount_to_pay:int) -> bool:
         return False
     amount_payed = 0
     while amount_payed < amount_to_pay:
-        hero_name_paying = helpers.select_option('Wer gibt Geld?', [hero.name for hero in company.heroes])
+        hero_name_paying = helpers.select_option(game_config.language_package.who_gives_money, [hero.name for hero in company.heroes])
         hero_paying = company.get_hero(hero_name_paying)
-        print(f'{hero_paying.name} hat {hero_paying.money} Geld.')
-        pay_amount = helpers.get_number_input(f'Wie viel will {hero_paying.name} geben?', hero_paying.money)
+        print(game_config.language_package.hero_money.format(hero_name=hero_paying.name, money=hero_paying.money))
+        pay_amount = helpers.get_number_input(game_config.language_package.how_much_gives.format(hero_name=hero_paying.name), hero_paying.money)
         hero_paying.modify_money(-1 * pay_amount)
         amount_payed += pay_amount
     return True
 
 def show_money(hero:Hero):
     print(f'{hero.name}:')
-    print(f'Geld: {hero.money}')
+    print(f'{game_config.language_package.money}: {hero.money}')
 
 def show_inventory(hero:Hero):
     print(f'{hero.name}:')
@@ -129,43 +127,43 @@ def move_item(source_hero:Hero, target_hero:Hero):
     show_inventory(source_hero)
     locations = []
     if source_hero.melee_weapon:
-        locations.append('Nahkampfwaffe')
+        locations.append(game_config.language_package.melee)
     if source_hero.ranged_weapon:
-        locations.append('Fernkampfwaffe')
+        locations.append(game_config.language_package.ranged)
     if source_hero.shield:
-        locations.append('Schild')
+        locations.append(game_config.language_package.shield)
     if source_hero.armor:
-        locations.append('Ruestung')
+        locations.append(game_config.language_package.armor)
     if source_hero.active_items:
-        locations.append('Aktive Gegenstände')
+        locations.append(game_config.language_package.active_items)
     if source_hero.backpack_items:
-        locations.append('Gegenstände im Rucksack')
+        locations.append(game_config.language_package.backpack_items)
     if not locations:
-        print('Keine verfügbaren Gegenstände.')
+        print(game_config.language_package.no_item_locations)
         return
     
-    source_location = helpers.select_option('Von wo möchtest du einen Gegenstand nehmen?', locations)
-    if source_location == 'Aktive Gegenstände':
-        item_name = helpers.select_option('Welchen Gegenstandd möchtest du bewegen?', source_hero.active_items)
-    if source_location == 'Gegenstände im Rucksack':
-        item_name = helpers.select_option('Welchen Gegenstandd möchtest du bewegen?', source_hero.backpack_items)
+    source_location = helpers.select_option(game_config.language_package.item_source, locations)
+    if source_location == game_config.language_package.active_items:
+        item_name = helpers.select_option(game_config.language_package.which_item_move, source_hero.active_items)
+    if source_location == game_config.language_package.backpack_items:
+        item_name = helpers.select_option(game_config.language_package.which_item_move, source_hero.backpack_items)
 
 
-    if source_location == 'Nahkampfwaffe':
+    if source_location == game_config.language_package.melee:
         item_name = source_hero.melee_weapon
         source_hero.melee_weapon = None
-    if source_location == 'Fernkampfwaffe':
+    if source_location == game_config.language_package.ranged:
         item_name = source_hero.ranged_weapon
         source_hero.ranged_weapon = None
-    if source_location == 'Schild':
+    if source_location == game_config.language_package.shield:
         item_name = source_hero.shield
         source_hero.shield = None
-    if source_location == 'Ruestung':
+    if source_location == game_config.language_package.armor:
         item_name = source_hero.armor
         source_hero.armor = None
-    if source_location == 'Aktive Gegenstände':
+    if source_location == game_config.language_package.active_items:
         source_hero.active_items.remove(item_name)
-    if source_location == 'Gegenstände im Rucksack':
+    if source_location == game_config.language_package.backpack_items:
         source_hero.backpack_items.remove(item_name)
 
     item = config_finder.get_item(item_name)
@@ -173,33 +171,33 @@ def move_item(source_hero:Hero, target_hero:Hero):
 
 
 
-    target_locations = ['Wegwerfen', 'Gegenstände im Rucksack']
+    target_locations = [game_config.language_package.throw_away, game_config.language_package.backpack_items]
     if not target_hero.melee_weapon and item.is_weapon and item.is_melee:
-        target_locations.append('Nahkampfwaffe')
+        target_locations.append(game_config.language_package.melee)
     if not target_hero.ranged_weapon and item.is_weapon and item.is_ranged:
-        target_locations.append('Fernkampfwaffe')
+        target_locations.append(game_config.language_package.ranged)
     if not target_hero.shield and item.is_shield:
-        target_locations.append('Schild')
+        target_locations.append(game_config.language_package.shield)
     if not target_hero.armor and item.is_armor:
-        target_locations.append('Ruestung')
+        target_locations.append(game_config.language_package.armor)
     if len(target_hero.active_items) < target_hero.active_item_slots and not item.is_armor and not item.is_weapon and not item.is_shield:
-        target_locations.append('Aktive Gegenstände')
+        target_locations.append(game_config.language_package.active_items)
 
-    target_location = helpers.select_option('Wohin möchtest du den Gegenstand bewegen?', target_locations)
+    target_location = helpers.select_option(game_config.language_package.item_target, target_locations)
     
-    if target_location == 'Wegwerfen':
+    if target_location == game_config.language_package.throw_away:
         return
-    if target_location == 'Nahkampfwaffe':
+    if target_location == game_config.language_package.melee:
         target_hero.melee_weapon = item_name
-    if target_location == 'Fernkampfwaffe':
+    if target_location == game_config.language_package.ranged:
         target_hero.ranged_weapon = item_name
-    if target_location == 'Schild':
+    if target_location == game_config.language_package.shield:
         target_hero.shield = item_name
-    if target_location == 'Ruestung':
+    if target_location == game_config.language_package.armor:
         target_hero.armor = item_name
-    if target_location == 'Aktive Gegenstände':
+    if target_location == game_config.language_package.active_items:
         target_hero.put_item_into_active_items(item_name)
-    if target_location == 'Gegenstände im Rucksack':
+    if target_location == game_config.language_package.backpack_items:
         target_hero.backpack_items.append(item_name)
 
 
@@ -208,19 +206,19 @@ def move_company_items(company:Company):
     while move:
         for hero in company.heroes:
             show_inventory(hero)
-        source_hero_name = helpers.select_option('Von welchem Helden möchtest du einen Gegenstand nehmen?', [hero.name for hero in company.heroes])
-        target_hero_name = helpers.select_option('Welchem Helden möchtest du einen Gegenstand geben?', [hero.name for hero in company.heroes])
+        source_hero_name = helpers.select_option(game_config.language_package.hero_source, [hero.name for hero in company.heroes])
+        target_hero_name = helpers.select_option(game_config.language_package.hero_target, [hero.name for hero in company.heroes])
         source_hero = [hero for hero in company.heroes if hero.name==source_hero_name][0]
         target_hero = [hero for hero in company.heroes if hero.name==target_hero_name][0]
         hero_swapping = True
         while hero_swapping:
             move_item(source_hero, target_hero)
-            hero_swapping = helpers.select_yes_no(f'Möchtest du weiter Gegenstände von {source_hero_name} zu {target_hero_name} bewegen?')
-        move = helpers.select_yes_no('Möchtest du weitere Gegenstände bewegen?') 
+            hero_swapping = helpers.select_yes_no(game_config.language_package.more_move_from_to.format(source_hero_name=source_hero_name, target_hero_name=target_hero_name))
+        move = helpers.select_yes_no(game_config.language_package.more_move) 
 
 def add_item(company:Company, item_name:str):
     item = config_finder.get_item(item_name)
-    hero_name = helpers.select_option(f'Welcher Held soll "{item.display_name}" bekommen?', [hero.name for hero in company.heroes])
+    hero_name = helpers.select_option(game_config.language_package.who_gets.format(item_name=item.display_name), [hero.name for hero in company.heroes])
     hero = [hero for hero in company.heroes if hero.name==hero_name][0]
     hero.backpack_items.append(item_name)
 
@@ -229,18 +227,18 @@ def move_company_money(company:Company):
     while move:
         for hero in company.heroes:
             show_money(hero)
-        source_hero_name = helpers.select_option('Von welchem Helden möchtest du einen Gegenstand nehmen?', [hero.name for hero in company.heroes])
-        target_hero_name = helpers.select_option('Welchem Helden möchtest du einen Gegenstand geben?', [hero.name for hero in company.heroes])
+        source_hero_name = helpers.select_option(game_config.language_package.hero_source, [hero.name for hero in company.heroes])
+        target_hero_name = helpers.select_option(game_config.language_package.hero_target, [hero.name for hero in company.heroes])
         source_hero = [hero for hero in company.heroes if hero.name==source_hero_name][0]
         target_hero = [hero for hero in company.heroes if hero.name==target_hero_name][0]
         
-        money = helpers.get_number_input('Wie viel Geld soll den Besitzer wechseln?', source_hero.money)
+        money = helpers.get_number_input(game_config.language_package.money_transfer_count, source_hero.money)
         source_hero.money -= money
         target_hero.money += money
-        move = helpers.select_yes_no('Möchtest du weiteres Geld bewegen?') 
+        move = helpers.select_yes_no(game_config.language_package.transfer_more_money) 
 
 def add_money(company:Company, money_value:int):
-    hero_name = helpers.select_option(f'Welcher Held soll die {money_value} Geld bekommen?', [hero.name for hero in company.heroes])
+    hero_name = helpers.select_option(game_config.language_package.money_target.format(money=money_value), [hero.name for hero in company.heroes])
     hero = [hero for hero in company.heroes if hero.name==hero_name][0]
     hero.money += money_value
 
@@ -250,31 +248,33 @@ def buy_item(hero:Hero, available_item_names:list[str]):
         return f'{item.name} ({item.money_value})'
     too_expensive_items = [item for item in available_items if item.money_value > hero.money]
     actual_available_items = [item for item in available_items if item.money_value <= hero.money]
-    print('Folgende Gegenstände sind leider zu teuer für dich:')
+    print(game_config.language_package.too_expensive)
     for item in too_expensive_items:
         print(get_shop_entry(item))
-    shop_entry_to_buy = helpers.select_option('Welchen Gegenstand möchtest du kaufen?', [
+    shop_entry_to_buy = helpers.select_option(game_config.language_package.which_buy, [
         get_shop_entry(item) for item in actual_available_items
-    ] + ['Nichts'])
-    if shop_entry_to_buy == 'Nichts':
+    ] + [game_config.language_package.no_item])
+    if shop_entry_to_buy == game_config.language_package.no_item:
         return
     item_to_buy = [item for item in actual_available_items if get_shop_entry(item) == shop_entry_to_buy][0]
     hero.modify_money(-1 * item_to_buy.money_value)
     hero.backpack_items.append(item_to_buy.name)
-    print(f'{hero.name} hat jetzt {item_to_buy.name} im Rucksack')
+    print(game_config.language_package.got_into_back.format(hero_name=hero.name, item_name=item_to_buy.display_name))
 
 def sell_item(hero:Hero):
-    items = []
-    active_postfix = ' (active)'
-    backpack_postfix = ' (Rucksack)'
+    items = [game_config.language_package.no_item]
+    active_postfix = f' ({game_config.language_package.backpack})'
+    backpack_postfix = f' ({game_config.language_package.backpack})'
     if hero.active_items:
         items += [f'{item}{active_postfix}' for item in hero.active_items]
     if hero.backpack_items:
         items += [f'{item}{backpack_postfix}' for item in hero.backpack_items]
     if not items:
-        print('Es gibt nichts zu verkaufen. Nur Gegenstände in Rucksack und aktiven Gegenständen können verkauft werden.')
+        print(game_config.language_package.nothing_to_sell)
         return
-    selected_item = helpers.select_option('Welchen Gegenstand möchtest du verkaufen?', items)
+    selected_item = helpers.select_option(game_config.language_package.which_sell, items)
+    if selected_item == game_config.language_package.no_item:
+        return
     if backpack_postfix in selected_item:
         item = config_finder.get_item(selected_item.strip(backpack_postfix))
         hero.backpack_items.remove(item.name)
