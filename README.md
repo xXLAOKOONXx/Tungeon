@@ -39,7 +39,6 @@ Build html documentation
 ### TODOs
 
 - weapon-type: prop of item and filter in function
-- additive drawing
 
 - functions:
   - Meucheln: Töte Gegner vor dem Kampf

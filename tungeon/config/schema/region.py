@@ -28,3 +28,7 @@ class Region(NamedJSONRepresentation):
     @property
     def trainable_skills(self) -> list[str]:
         return self.json_data.get('trainable-skills', [])
+    
+    @property
+    def additive_drawing(self) -> bool:
+        return self.json_data.get('additive-drawing', False)
