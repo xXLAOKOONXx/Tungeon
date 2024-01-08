@@ -63,6 +63,27 @@
         "learning-cost-improvement-points":1
     },
     {
+        "name":"wound-motivation",
+        "display-name":"Motivation der Gesundung",
+        "description":"Der Held kann versuchen einen beliebigen Helden zu motivieren und damit dessen Wundheilkraft zu verbessern.",
+        "functions":[
+            {
+                "condition-type":"round-preperation",
+                "function-groups":["music"],
+                "wound-reduce":1,
+                "additional-rounds":0,
+                "other-hero-allowed":true,
+                "base-skill-check":{
+                    "is-intelligence":true,
+                    "check-modifier":0,
+                    "check-types":[]
+                }
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
         "name":"ausdauer",
         "display-name":"Ausdauer",
         "description":"Der Held kann mit einer Verletzung mehr aktiv sein.",
@@ -99,7 +120,10 @@
             }
         ],
         "learning-cost-money":30,
-        "learning-cost-improvement-points":1
+        "learning-cost-improvement-points":1,
+        "learning-required-skills":["uberleben", "ausdauer"],
+        "learning-removes-skills":["uberleben", "ausdauer"],
+        "other-skill-prevention":["uberleben", "ausdauer"]
     },
     {
         "name":"erholung",
@@ -170,6 +194,75 @@
         "learning-cost-improvement-points":1
     },
     {
+        "name":"meist-Dolchstoss",
+        "display-name":"Meisterlicher Dolchstoss",
+        "description":"Durchsteche die Ruestung deines Feindes.",
+        "functions":[
+            {
+                "condition-type":"fight",
+                "fight-type":"melee",
+                "resistance-passing":4,
+                "resistance-surpassing":false
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1,
+        "learning-required-skills":["Dolchstoss"],
+        "learning-removes-skills":["Dolchstoss"],
+        "other-skill-prevention":["Dolchstoss"]
+    },
+    {
+        "name":"absolut-Dolchstoss",
+        "display-name":"Absoluter Dolchstoss",
+        "description":"Durchsteche die Ruestung deines Feindes und füge mehr Schaden zu, wenn der Gegner zu wenig Ruestung hat.",
+        "functions":[
+            {
+                "condition-type":"fight",
+                "fight-type":"melee",
+                "resistance-passing":4,
+                "resistance-surpassing":false
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1,
+        "learning-required-skills":["Dolchstoss"],
+        "learning-removes-skills":["Dolchstoss"],
+        "other-skill-prevention":["Dolchstoss"]
+    },
+    {
+        "name":"piercingarrow",
+        "display-name":"Durchdringender Schuss",
+        "description":"Durchbreche die Ruestung deines Feindes mit deiner Fernkampfwaffe.",
+        "functions":[
+            {
+                "condition-type":"fight",
+                "fight-type":"ranged",
+                "resistance-passing":1,
+                "resistance-surpassing":false
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"improved-piercingarrow",
+        "display-name":"Meisterlicher Durchdringender Schuss",
+        "description":"Durchbreche die Ruestung deines Feindes mit deiner Fernkampfwaffe.",
+        "functions":[
+            {
+                "condition-type":"fight",
+                "fight-type":"ranged",
+                "resistance-passing":3,
+                "resistance-surpassing":false
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1,
+        "learning-required-skills":["piercingarrow"],
+        "learning-removes-skills":["piercingarrow"],
+        "other-skill-prevention":["piercingarrow"]
+    },
+    {
         "name":"meist.Rundumschlag",
         "display-name":"Meisterlicher Rundumschlag",
         "description":"Fuege im Nahkampf mehr Schaden hinzu, wenn die Gegner wenigstens zu viert sind.",
@@ -178,7 +271,7 @@
                 "condition-type":"fight",
                 "fight-enemy-min":4,
                 "fight-type":"melee",
-                "fight-flat-bonus":1
+                "fight-flat-bonus":2
             }
         ],
         "learning-cost-money":30,
@@ -186,6 +279,24 @@
         "learning-required-skills":["Rundumschlag"],
         "learning-removes-skills":["Rundumschlag"],
         "other-skill-prevention":["Rundumschlag"]
+    },
+    {
+        "name":"Doppelschlag",
+        "display-name":"Doppelschlag",
+        "description":"Fuege im Nahkampf mehr Schaden hinzu, wenn die Gegner wenigstens zu zweit sind.",
+        "functions":[
+            {
+                "condition-type":"fight",
+                "fight-enemy-min":2,
+                "fight-type":"melee",
+                "fight-flat-bonus":1
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1,
+        "learning-required-skills":["Rundumschlag"],
+        "learning-removes-skills":["Rundumschlag"],
+        "other-skill-prevention":["Rundumschlag", "meist.Rundumschlag"]
     },
     {
         "name":"Sturmangriff",
@@ -199,7 +310,9 @@
                 "fight-type":"melee",
                 "fight-flat-bonus":1
             }
-        ]
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
     },
     {
         "name":"Praeziser Schuss",
@@ -212,7 +325,24 @@
                 "fight-type":"ranged",
                 "fight-flat-bonus":1
             }
-        ]
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"improved Praeziser Schuss",
+        "display-name":"Meisterlicher Praeziser Schuss",
+        "description":"Greife vorbereitet im Fernkampf an, um mehr Schaden zu machen",
+        "functions":[
+            {                
+                "condition-type":"fight",
+                "fight-voluntary-required":true,
+                "fight-type":"ranged",
+                "fight-flat-bonus":2
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
     },
     {
         "name":"prevent-danger",
@@ -227,6 +357,100 @@
                     "check-types":["search"]
                 }
             }
-        ]
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"improved-prevent-danger",
+        "display-name":"Meisterliche Fallenkunde",
+        "description":"Versuche Fallen zu umgehen",
+        "functions":[
+            {                
+                "is-prevent-trap":true,
+                "base-skill-check":{
+                    "is-agility":true,
+                    "check-modifier":1,
+                    "check-types":["search"]
+                }
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1,
+        "learning-required-skills":["prevent-danger"],
+        "learning-removes-skills":["prevent-danger"],
+        "other-skill-prevention":["prevent-danger"]
+    },
+    {
+        "name":"drachenschuppe",
+        "display-name":"Drachenschuppe",
+        "description":"Verwandelt mit einem Zauber deine Haut in Drachenschuppen und gibt dir so erhoehte Resistenzen.",
+        "functions":[
+            {
+                "condition-type":"fight",
+                
+                "resistance":1,
+                
+                "base-skill-check":{
+                    "is-intelligence":false,
+                    "is-agility":true,
+                    "is-strength":false,
+                    "is-speed":false,
+                    "check-modifier":0,
+                    "check-types":["agility", "fight-related", "spell"]
+                  }
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"feuerball",
+        "display-name":"Feuerball",
+        "description":"Werfe einen Feuerball, um deinen Gegnern erhoehten Schaden zuzufügen.",
+        "functions":[
+            {
+                "condition-type":"fight",
+                
+                "fight-flat-bonus":2,
+                
+                "base-skill-check":{
+                    "is-intelligence":true,
+                    "is-agility":false,
+                    "is-strength":false,
+                    "is-speed":false,
+                    "check-modifier":0,
+                    "check-types":["intelligence", "fight-related", "spell"]
+                  }
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1
+    },
+    {
+        "name":"meist-feuerball",
+        "display-name":"Meisterlicher Feuerball",
+        "description":"Werfe einen Feuerball, um deinen Gegnern massiven Schaden zuzufügen.",
+        "functions":[
+            {
+                "condition-type":"fight",
+                
+                "fight-flat-bonus":4,
+                
+                "base-skill-check":{
+                    "is-intelligence":true,
+                    "is-agility":false,
+                    "is-strength":false,
+                    "is-speed":false,
+                    "check-modifier":0,
+                    "check-types":["intelligence", "fight-related", "spell"]
+                  }
+            }
+        ],
+        "learning-cost-money":30,
+        "learning-cost-improvement-points":1,
+        "learning-required-skills":["feuerball"],
+        "learning-removes-skills":["feuerball"],
+        "other-skill-prevention":["feuerball"]
     }
 ]

@@ -5,12 +5,12 @@
         "avilable-skills":[
             "strength-motivation",
             "agility-motivation",
-            "intelligence-motivation"
+            "intelligence-motivation",
+            "wound-motivation"
         ],
         "double-price-skills":[
             "Praeziser Schuss",
-            "strength-motivation",
-            "meist.Rundumschlag",
+            "Rundumschlag",
             "Sturmangriff"
         ],
         "starter-items":[
@@ -24,6 +24,32 @@
                     ["strength-motivation"],
                     ["agility-motivation"],
                     ["intelligence-motivation"]
+                ]
+            }
+        ]
+    },
+    {
+        "name":"zauberer",
+        "display-name":"Zauberer",
+        "avilable-skills":[
+            "drachenschuppe",
+            "feuerball"
+        ],
+        "double-price-skills":[
+            "Praeziser Schuss",
+            "Rundumschlag",
+            "Sturmangriff"
+        ],
+        "starter-items":[
+            "zauberstab"
+        ],
+        "starter-money":0,
+        "starter-skills":[
+            {
+                "is-roll":true,
+                "roll-results":[
+                    ["drachenschuppe"],
+                    ["feuerball"]
                 ]
             }
         ]
@@ -63,6 +89,8 @@
         "display-name":"Dieb",
         "avilable-skills":[
             "Dolchstoss",
+            "meist-Dolchstoss",
+            "absolut-Dolchstoss",
             "prevent-danger"
         ],
         "double-price-skills":[
@@ -89,7 +117,12 @@
         "name":"waldlaufer",
         "display-name":"Waldlaeufer",
         "avilable-skills":[
-            "Praeziser Schuss"
+            "Praeziser Schuss",
+            "erholung",
+            "improved Praeziser Schuss",
+            "prevent-danger",
+            "improved-piercingarrow",
+            "piercingarrow"
         ],
         "double-price-skills":[
             "Sturmangriff",
@@ -104,7 +137,9 @@
             {
                 "is-roll":true,
                 "roll-results":[
-                    ["Praeziser Schuss"]
+                    ["Praeziser Schuss"],
+                    ["erholung"],
+                    ["prevent-danger"]
                 ]
             }
         ]

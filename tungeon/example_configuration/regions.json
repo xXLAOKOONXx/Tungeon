@@ -289,9 +289,52 @@
                 ]
             },
             {
+                "name":"saufgelage",
+                "display-name":"Saufgelage",
+                "values":[41,42,43,44,45],
+                "steps":[
+                    {
+                        "id":0,
+                        "text":"Ihr versackt in einem Gasthaus und habt eine hoehere Rechnung als ihr urspruenglich gedacht habt. Ihr schuldet dem Wirt noch 10 Geld.",
+                        "money-loss":10,
+                        "unable-to-pay":1
+                    },
+                    {
+                        "id":1,
+                        "text":"Da ihr nicht genug Geld habt, muesst ihr bis spaet in die Nacht teller schrubben."
+                    }
+                ]
+            },
+            {
+                "name":"saufdieb",
+                "display-name":"Saufdieb",
+                "values":[46,47,48,49,50],
+                "steps":[
+                    {
+                        "id":0,
+                        "text":"Ihr habt sehr viel Spass in einem Gasthaus. Staendig schmeisst einer der Anwesenden eine Runde.",
+                        "next-step":1
+                    },
+                    {
+                      "id":1,
+                      "text":"Im Gasthaus scheint auch ein Dieb umherzuschleichen, der es auf kleine Gegenstaende abgesehen hat.",
+                      "is-steal":true,
+                      "steal-types":["active"],
+                      "can-miss":true,
+                      "yes":2
+                    },
+                    {
+                        "id":2,
+                        "text":"Dem Wirt ist es sehr unangenehm, dass euch etwas gestohlen wurde, als Entschaedigung gibt er euch 5 Geld mit.",
+                        "is-reward":true,
+                        "reward-money":5
+                    }
+                ]
+            },
+            {
                 "name":"Raububerfall",
                 "display-name":"Raububerfall",
-                "values":[41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98],
+                "values":[51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98],
                 "steps":[
                     {
                         "id":0,
@@ -376,6 +419,105 @@
         ],
         "trainable-skills":[
 
+        ]
+    },
+    {
+        "name":"steppe",
+        "display-name":"Steppe",
+        "available-regions":["Stadt"],
+        "events":[
+            {
+                "name":"schatzfund",
+                "display-name":"Schatzfund",
+                "values":[1,2,3,4,5],
+                "steps":[
+                    {
+                        "id":0,
+                        "text":"Ihr findet einen Rucksack in einem Busch und schaut nach, was darin ist.",
+                        "is-reward":true,
+                        "reward-draws":[
+                            {
+                                "rewardset-name":"simple",
+                                "draw-d6-count":2,
+                                "draw-base":-2
+                            },
+                            {
+                                "rewardset-name":"simple",
+                                "draw-d6-count":2,
+                                "draw-base":-2
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "name":"teacher",
+                "display-name":"Lehrer",
+                "values":[6,7,8,9,10,11,12,13],
+                "steps":[{
+                    "id":0,
+                    "text":"Ihr trefft auf einen Lehrmeister, der euch Dinge beibringen kann.",
+                    "required-professions":["fighter"],
+                    "learn-skills":[
+                        {
+                        "skill-name":"precision",
+                        "money":30,
+                        "points":1
+                        }
+                    ]
+                }]
+            },
+            {
+                "name":"small-attack",
+                "display-name":"Kleiner Angriff",
+                "values":[14,15,16,17,18,19,20,21,22,23,24,25],
+                "steps":[
+                    {
+                        "id":0,
+                        "text":"Ihr werdet von drei Banditen zu Pferde eingekreist und angegriffen.",
+                        "is-fight":true,
+                        "fight-enemy-count":3,
+                        "fight-enemy-types":["mounted"],
+                        "fight-enemy-dice":3,
+                        "fight-enemy-base-damage":10,
+                        "fight-enemy-resistance":2,
+                        "fight-thief-count":2,
+                        "fight-win":1,
+                        "fight-tie":2,
+                        "fight-loose":3
+                    },
+                    {
+                        "id":1,
+                        "text":"Bei ihrer Flucht verlieren die Banditen einen Geldbeutel mit 10 Geldstuecken.",
+                        "is-reward":true,
+                        "reward-money":10
+                    },
+                    {
+                        "id":2,
+                        "text":"Die Banditen erkennen eure Staerke und reiten in die Ferne."
+                    },
+                    {
+                        "id":3,
+                        "text":"Die Banditen haben euch besiegt und rauben euch aus.",
+                        "is-steal":true,
+                        "steal-types":["money"],
+                        "can-miss":true
+                    }
+                ]
+            },
+            {
+                "name":"tradesman",
+                "display-name":"Handelsmöglichkeiten",
+                "values":[26,27,28,29,30,31,32,33,34,35],
+                "steps":[
+                    {
+                        "id":0,
+                        "text":"Ihr trefft auf einen jungen Bauern. Er erzaehlt euch davon, wie schwer es fuer ihn ist, den Hof zu fuehren, nachdem sein Vater vor kurzem gestorben ist. Er fragt euch, ob ihr ihm fuer 50 Geldstuecke das alte Schwert seines Vaters abkaufen wollt.",
+                        "yes":1,
+                        "no":3
+                    }
+                ]
+            }
         ]
     },
     {

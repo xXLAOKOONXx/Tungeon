@@ -33,3 +33,20 @@ Build html documentation
 ```
 
 ### TODOs
+
+- weapon-type: prop of item and filter in function
+- additive drawing
+
+- functions:
+    - Meucheln: Töte Gegner vor dem Kampf
+    - Diebstahl: stehle ggnstnd in ereignissen; stehlen beim Lagern
+    - reroll as round bonus
+
+- ereignisse
+    - 1o1 fight ereignisse
+    - aussetzen
+    - fight + loose => thief behavior
+    - enemy using functions e.g. round based bonus
+    - poison
+    - poisoned-wounds
+    - trade

@@ -146,6 +146,20 @@
         "resistance":4
     },
     {
+        "name":"zauberstab",
+        "display-name":"Zaubererstab",
+        "is-weapon":true,
+        "damage":0,
+        "money-value":50,
+        "functions":[
+            {
+                "condition-type":"dice-reroll",
+                "reroll-types":["spell"],
+                "destructive":false
+            }
+        ]
+    },
+    {
         "name":"thor-emblem",
         "display-name":"Thoremblem",
         "functions":[
