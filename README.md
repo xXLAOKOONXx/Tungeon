@@ -51,3 +51,13 @@ Build html documentation
   - enemy using functions e.g. round based bonus
   - poison
   - poisoned-wounds
+
+#### Poison Concept
+
+- Events might cause one or more heros to get poisoned
+- Functions might remove poisons
+- Poison might have different properties suche as
+  - prevent healing
+  - death in x rounds
+  - wounds in x rounds
+  - mali on throws

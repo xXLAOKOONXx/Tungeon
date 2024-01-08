@@ -1,6 +1,7 @@
 
 
 from typing import Self
+from tungeon.config.schema.poison import Poison
 from tungeon.data.round_effects import RoundEffect
 
 from tungeon.logics import config_finder
@@ -29,7 +30,8 @@ class Hero:
                  wounds:int=0,
                  money:int=0,
                  active_item_slots:int=6,
-                 round_effects:list[RoundEffect] = []
+                 round_effects:list[RoundEffect] = [],
+                 poisons:list[Poison]=[]
                  ) -> None:
         self.name = name
         self.race = race
@@ -50,6 +52,7 @@ class Hero:
         self.money = money
         self.active_item_slots = active_item_slots
         self.round_effects = round_effects
+        self.poisons = poisons
 
 
     def __dict__(self):
@@ -72,7 +75,8 @@ class Hero:
             'wounds':self.wounds,
             'money':self.money,
             'active-item-slots':self.active_item_slots,
-            'round-effects':[re.__dict__() for re in self.round_effects]
+            'round-effects':[re.__dict__() for re in self.round_effects],
+            'poisons':[p.__dict__() for p in self.poisons]
         }
     
     @classmethod
@@ -96,7 +100,8 @@ class Hero:
             wounds=json_data.get('wounds'),
             money=json_data.get('money'),
             active_item_slots=json_data.get('active-item-slots'),
-            round_effects=[RoundEffect.from_dict(re) for re in json_data.get('round-effects')]
+            round_effects=[RoundEffect.from_dict(re) for re in json_data.get('round-effects')],
+            posions=[Poison.from_dict(d) for d in json_data.get('poisons')]
         )
     
     def inventory_str(self) -> str:

@@ -1,5 +1,6 @@
 from tungeon.config.schema.base_skill_check import BaseSkillCheck
 from tungeon.config.schema.json_representation import JSONRepresentation, NamedJSONRepresentation
+from tungeon.config.schema.poison import Poison
 from tungeon.config.schema.reward_draws import RewardDraw
 
 class RegionEvent(NamedJSONRepresentation):
@@ -288,3 +289,11 @@ class RegionEventStep(NamedJSONRepresentation):
     @property
     def allow_multiple_buy(self) -> bool:
         return self.json_data.get('allow-money-move', False)
+    
+    @property
+    def is_poison(self) -> bool:
+        return self.json_data.get('is-poison', False)
+    
+    @property
+    def poison(self) -> Poison:
+        return Poison.from_dict(self.json_data.get('poison'))

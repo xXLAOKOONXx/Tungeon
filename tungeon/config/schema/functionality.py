@@ -145,3 +145,19 @@ class Functionality(JSONRepresentation):
     @property
     def fight_enemy_types(self) -> list[str] | None:
         return self.json_data.get('fight-enemy-types')
+    
+    @property
+    def poison_type_preventions(self) -> list[str] | None:
+        return self.json_data.get('poison-type-prevention')
+    
+    @property
+    def healing_poison_types(self) -> list[str] | None:
+        return self.json_data.get('healing-poison-types')
+    
+    @property
+    def poison_count_cleaning(self) -> int | None:
+        return self.json_data.get('poison-count-cleaning')
+    
+    @property
+    def heals_poison(self) -> bool:
+        return self.json_data.get('heals-poison', False)
