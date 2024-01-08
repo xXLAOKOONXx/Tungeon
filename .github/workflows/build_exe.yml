@@ -20,3 +20,16 @@ jobs:
     - run: gh release upload ${{ github.event.release.tag_name }} dist\Tungeon.exe
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  zip_and_publish_example_config:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - run: |
+          cd tungeon;
+          zip example_configuration.zip example_configuration/*;
+          cd ..
+    - run: gh release upload ${{ github.event.release.tag_name }} tungeon/example_configuration.zip
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
