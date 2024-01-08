@@ -49,10 +49,11 @@ Build html documentation
   - aussetzen
   - fight + loose => thief behavior
   - enemy using functions e.g. round based bonus
-  - poison
   - poisoned-wounds
 
 #### Poison Concept
+
+TODO: Test
 
 - Events might cause one or more heros to get poisoned
 - Functions might remove poisons
