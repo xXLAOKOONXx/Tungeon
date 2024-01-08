@@ -3,6 +3,7 @@ name: Run Checks
 on:
   push:
     branches:
+      - '**'
       - '!main'
 
 jobs:
