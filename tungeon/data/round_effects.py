@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
@@ -10,7 +10,7 @@ class RoundEffect:
     bonus_intelligence:int = 0
     bonus_melee_damage:int = 0
     bonus_ranged_damage:int = 0
-    poison_type_preventions:list[str] = []
+    poison_type_preventions:list[str] = field(default_factory=list)
 
     def __dict__(self):
         return {
