@@ -6,6 +6,7 @@
   "display-name":"Town",
   "available-regions":["fields"],
   "free-camping":true,
+  "additive-drawing":true,
   "shop-items":[
     "sword",
     "shield"
@@ -23,6 +24,7 @@
 - display-name: name to show the player
 - available-regions: list of adjacent regions in which the company can go to from the current region
 - free-camping: flag whether camping is free in this region, free camping does not require a hero setting up a camp
+- additive-drawing: flag whether new event number drawing will run additive or starts at zero every round
 - shop-items: list of items available for purchase within this region
 - trainable-skills: list of skills that can be trained within this region while camping
 - events: list of events that might happen in this region

@@ -180,8 +180,11 @@ def perform_camping(company:Company):
 def search_current_region(company:Company):
     region = [region for region in game_config().regions if region.name == company.current_region][0]
     event_roll = random.randint(1,100)
+    if config_finder.get_region(company.current_region).additive_drawing:
+        event_roll += company.current_event or 0
     region_event = [e for e in region.events if event_roll in e.values][0]
     event_dialog.perform_event(company, region_event, region.name)
+    company.current_event = event_roll
 
 def perform_region_activity(company:Company):
     region = config_finder.get_region(company.current_region)
@@ -202,6 +205,7 @@ def perform_region_activity(company:Company):
     elif selection == game_config().language_package.region_option_travel:
         region_selection = helpers.select_option('',region.available_regions)
         company.current_region = region_selection
+        company.current_event = None
         search_current_region(company)
     elif selection == game_config().language_package.region_option_search:
         search_current_region(company)
