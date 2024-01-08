@@ -332,9 +332,110 @@
                 ]
             },
             {
+                "name":"armdruecken",
+                "display-name":"Armdruecken",
+                "values":[51,52,53,54,55],
+                "steps":[
+                    {
+                        "id":0,
+                        "text":"In der Ecke eures Gasthauses sitzt ein Kerl, der behauptet, er sei der staerkste Mensch. Das kann er im Armdruecken beweisen.",
+                        "next-step":1
+                    },
+                    {
+                      "id":1,
+                      "text":"Wagt einer der Helden einen Versuch gegen den Tollkuehnen?",
+                      "is-skill-check":true,
+                      "base-skill-check":{
+                        "is-strength":true,
+                        "check-modifier":-1,
+                        "check-types":["strength"]
+                        },
+                      "required-races":["Mensch"],
+                      "yes":2,
+                      "next-step":4,
+                      "no":3
+                    },
+                    {
+                        "id":2,
+                        "text":"Euer Held ist tatsaechlich staerker als der Grossmaeuler und erhaelt vom Schwaetzer 5 Geldstuecke.",
+                        "is-reward":true,
+                        "reward-money":5
+                    },
+                    {
+                        "id":3,
+                        "text":"Euer Held hat unterlegen und die ganze Truppe verzieht sich schnell aus dem Wirtsraum."
+                    },
+                    {
+                        "id":4,
+                        "text":"Dann ist das wohl eine ereignislose Runde."
+                    }
+                ]
+            },
+            {
+                "name":"goettergerangel",
+                "display-name":"Goettergerangel",
+                "values":[56,57,58,59,60],
+                "steps":[
+                    {
+                        "id":0,
+                        "text":"Ein Halbstarker kommt auf einen Helden zu und faengt einen Streit an.",
+                        "next-step":1
+                    },
+                    {
+                      "id":1,
+                      "text":"Wagt einer der Helden einen Versuch gegen den Tollkuehnen?",
+                      "is-fight":true,
+                      "fight-enemy-count":1,
+                      "fight-enemy-dice":1,
+                      "fight-enemy-base-damage":1,
+                      "fight-enemy-resistance":0,
+                      "fight-win":1,
+                      "fight-tie":2,
+                      "fight-loose":3,
+                      "is-single-hero":true,
+                      "random-hero":[1,2],
+                      "fight-melee":true
+                    },
+                    {
+                        "id":2,
+                        "text":"Euer Held ist tatsaechlich staerker als der Grossmaeuler und erhaelt vom Schwaetzer 5 Geldstuecke.",
+                        "is-reward":true,
+                        "reward-money":5
+                    },
+                    {
+                        "id":3,
+                        "text":"Euer Held hat unterlegen und die ganze Truppe verzieht sich schnell aus dem Wirtsraum."
+                    },
+                    {
+                        "id":4,
+                        "text":"Dann ist das wohl eine ereignislose Runde."
+                    }
+                ]
+            },
+            {
+                "name":"dolchhaendler",
+                "display-name":"Dolchhaendler",
+                "values":[61],
+                "steps":[
+                    {
+                        "id":0,
+                        "text":"Ein Dolchhaendler bietet einen Dolch zum festlichen Preis von 5 Geldstuecken an.",
+                        "is-trade":true,
+                        "allow-money-move":true,
+                        "allow-multiple-buy":true,
+                        "trades":[
+                            {
+                                "item-name":"Dolch",
+                                "money":5
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
                 "name":"Raububerfall",
                 "display-name":"Raububerfall",
-                "values":[51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98],
+                "values":[61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98],
                 "steps":[
                     {
                         "id":0,

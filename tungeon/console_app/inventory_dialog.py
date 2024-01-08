@@ -1,6 +1,6 @@
 from typing import Literal
 from tungeon.config.schema.item import Item
-from tungeon.config.schema.region_event import RegionEventStep
+from tungeon.config.schema.region_event import RegionEventStep, Trade
 from tungeon.console_app import helpers
 from tungeon.data.company import Company
 from tungeon.data.hero import Hero
@@ -241,6 +241,27 @@ def add_money(company:Company, money_value:int):
     hero_name = helpers.select_option(game_config().language_package.money_target.format(money=money_value), [hero.name for hero in company.heroes])
     hero = [hero for hero in company.heroes if hero.name==hero_name][0]
     hero.money += money_value
+
+def buy_item_from_list(hero:Hero, available_items:list[Trade]) -> str | None:
+    for trade in available_items:
+        trade.display_name = config_finder.get_item(trade.item_name).display_name
+    def get_shop_entry(trade) -> str:
+        return f'{trade.display_name} ({trade.money})'
+    too_expensive_items = [item for item in available_items if item.money > hero.money]
+    actual_available_items = [item for item in available_items if item.money <= hero.money]
+    print(game_config().language_package.too_expensive)
+    for item in too_expensive_items:
+        print(get_shop_entry(item))
+    shop_entry_to_buy = helpers.select_option(game_config().language_package.which_buy, [
+        get_shop_entry(item) for item in actual_available_items
+    ] + [game_config().language_package.no_item])
+    if shop_entry_to_buy == game_config().language_package.no_item:
+        return None
+    item_to_buy = [item for item in actual_available_items if get_shop_entry(item) == shop_entry_to_buy][0]
+    hero.modify_money(-1 * item_to_buy.money)
+    hero.backpack_items.append(item_to_buy.item_name)
+    print(game_config().language_package.got_into_back.format(hero_name=hero.name, item_name=item_to_buy.display_name))
+    return item_to_buy.item_name
 
 def buy_item(hero:Hero, available_item_names:list[str]):
     available_items = [item for item in game_config().items if item.name in available_item_names]

@@ -553,10 +553,12 @@ class LanguagePackage(JSONRepresentation):
 
     @property
     def select_world_settings(self) -> str:
-        return self.json_data.get('select-world-settings')
+        return self.json_data.get('select-world-settings','')
 
 
-
+    @property
+    def which_hero_activity(self) -> str:
+        return self.json_data.get('which-hero-activity','Which hero should take part in this activity?')
 
 
 

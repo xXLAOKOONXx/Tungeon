@@ -47,10 +47,8 @@ Build html documentation
   - reroll as round bonus
 
 - ereignisse
-  - 1o1 fight ereignisse
   - aussetzen
   - fight + loose => thief behavior
   - enemy using functions e.g. round based bonus
   - poison
   - poisoned-wounds
-  - trade

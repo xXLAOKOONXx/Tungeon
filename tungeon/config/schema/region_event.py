@@ -1,3 +1,4 @@
+from tungeon.config.schema.base_skill_check import BaseSkillCheck
 from tungeon.config.schema.json_representation import JSONRepresentation, NamedJSONRepresentation
 from tungeon.config.schema.reward_draws import RewardDraw
 
@@ -40,6 +41,18 @@ class RandomGroup(JSONRepresentation):
     @property
     def step(self) -> int | None:
         return self.json_data.get('step')
+    
+class Trade(JSONRepresentation):
+    def __init__(self, json_data: dict) -> None:
+        super().__init__(json_data)
+
+    @property
+    def item_name(self) -> str:
+        return self.json_data.get('item-name','')
+    
+    @property
+    def money(self) -> int:
+        return self.json_data.get('money', 0)
 
 class RegionEventStep(NamedJSONRepresentation):
     def __init__(self, json_data: dict) -> None:
@@ -239,3 +252,39 @@ class RegionEventStep(NamedJSONRepresentation):
     @property
     def fight_enemy_types(self) -> list[str]:
         return self.json_data.get('fight-enemy-types',[])
+    
+    @property
+    def is_skill_check(self) -> bool:
+        return self.json_data.get('is-skill-check', False)
+    
+    @property
+    def required_races(self) -> list[str]:
+        return self.json_data.get('required-races', [])
+    
+    @property
+    def base_skill_check(self) -> BaseSkillCheck | None:
+        return self.json_data.get('base-skill-check')
+    
+    @property
+    def is_single_hero(self) -> bool:
+        return self.json_data.get('is-single-hero', False)
+    
+    @property
+    def random_hero(self) -> list[int]:
+        return self.json_data.get('random-hero', [])
+    
+    @property
+    def is_trade(self) -> bool:
+        return self.json_data.get('is-trade', False)
+    
+    @property
+    def trades(self) -> list[Trade]:
+        return [Trade(t) for t in self.json_data.get('trades', [])]
+    
+    @property
+    def allow_money_move(self) -> bool:
+        return self.json_data.get('allow-money-move', False)
+    
+    @property
+    def allow_multiple_buy(self) -> bool:
+        return self.json_data.get('allow-money-move', False)

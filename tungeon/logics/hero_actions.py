@@ -1,4 +1,6 @@
+from tungeon.config.schema.base_skill_check import BaseSkillCheck
 from tungeon.config.schema.functionality import Functionality
+from tungeon.config.schema.region_event import RegionEventStep
 from tungeon.data.hero import Hero
 from tungeon.data.condition	import condition
 from tungeon.data.round_effects import RoundEffect
@@ -6,17 +8,17 @@ from tungeon.logics.ui_connection import get_skillcheck_dialog
 from tungeon.logics.hero_status import is_effected_by_wound
 
 
-def add_base_check_condition(functionality:Functionality):
-    if functionality.base_skill_check.is_strength:
+def add_base_check_condition(base_skill_check:BaseSkillCheck):
+    if base_skill_check.is_strength:
         condition.base_skill = 'strength'
-    if functionality.base_skill_check.is_speed:
+    if base_skill_check.is_speed:
         condition.base_skill = 'speed'
-    if functionality.base_skill_check.is_agility:
+    if base_skill_check.is_agility:
         condition.base_skill = 'agility'
-    if functionality.base_skill_check.is_intelligence:
+    if base_skill_check.is_intelligence:
         condition.base_skill = 'intelligence'
-    condition.check_types = functionality.base_skill_check.check_types
-    condition.check_modifier = functionality.base_skill_check.check_modifier
+    condition.check_types = base_skill_check.check_types
+    condition.check_modifier = base_skill_check.check_modifier
 
 def remove_base_check_condition():
     condition.base_skill = None
@@ -27,7 +29,17 @@ def do_check(hero:Hero, functionality:Functionality) -> bool:
     if is_effected_by_wound(hero):
         return False
     if functionality.base_skill_check:
-        add_base_check_condition(functionality)
+        add_base_check_condition(functionality.base_skill_check)
+        skill_check_result = get_skillcheck_dialog()(hero)
+        remove_base_check_condition()
+        return skill_check_result
+    return True
+
+def do_step_check(hero:Hero, step:RegionEventStep) -> bool:    
+    if is_effected_by_wound(hero):
+        return False
+    if step.base_skill_check:
+        add_base_check_condition(step.base_skill_check)
         skill_check_result = get_skillcheck_dialog()(hero)
         remove_base_check_condition()
         return skill_check_result
@@ -36,7 +48,7 @@ def do_check(hero:Hero, functionality:Functionality) -> bool:
 
 def apply_prepare_functionality(hero:Hero, target_hero:Hero, functionality:Functionality):
     if functionality.base_skill_check:
-        add_base_check_condition(functionality)
+        add_base_check_condition(functionality.base_skill_check)
         skill_check_result = get_skillcheck_dialog()(hero)
         remove_base_check_condition()
         if not skill_check_result:

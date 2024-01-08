@@ -5,9 +5,11 @@ from tungeon.config.schema.region_event import RegionEvent, RegionEventStep
 from tungeon.config.schema.skill import Skill
 from tungeon.data.company import Company
 from tungeon.console_app import fighting_dialog, inventory_dialog, helpers, learning_dialog
+from tungeon.data.hero import Hero
 from tungeon.logics import rewardsystem, functionality_system, config_finder, hero_actions
 from tungeon.data.condition import condition
 from tungeon.config.game_config import game_config
+from tungeon.logics.hero_status import is_effected_by_wound
 
 @dataclass
 class RegionJump():
@@ -90,9 +92,65 @@ def perform_reward(company:Company, step:RegionEventStep) -> int | None:
             inventory_dialog.add_item(company, item)
     return step.next_step
 
+def select_hero(company:Company, step:RegionEventStep) -> Hero |None:
+    heros = company.heroes
+    if step.required_professions:
+        heros = [h for h in heros if h.profession in step.required_professions]
+    if step.required_races:
+        heros = [h for h in heros if h.race in step.required_races]
+    heros = [h for h in heros if is_effected_by_wound(h)]
+    if not heros:
+        return None
+    # select hero
+
+    if step.random_hero:
+        legitimate_hero_names = [h.name for i, h in enumerate(company.heroes) if i in step.random_hero]
+        if not legitimate_hero_names:
+            return None
+        hero_name = random.sample(legitimate_hero_names, 1)[0]
+        return company.get_hero(hero_name)
+
+    selected_hero_name = helpers.select_option(game_config().language_package.which_hero_activity, [game_config().language_package.no_hero] + [h.name for h in heros])
+    if selected_hero_name == game_config().language_package.no_hero:
+        return None
+    selected_hero = company.get_hero(selected_hero_name)
+    return selected_hero
+    
+
+def perform_skill_check(company:Company, step:RegionEventStep) -> int | None:
+    selected_hero = select_hero(company, step)
+    if selected_hero is None:
+        return step.next_step
+    if hero_actions.do_step_check(selected_hero, step):
+        return step.yes
+    return step.no
+
+def perform_trade(company:Company, step:RegionEventStep) -> int | None:
+    trades = step.trades
+    selected_hero = select_hero(company, step)
+    if step.allow_money_move:
+        inventory_dialog.move_company_money(company)
+    bought_item_name = inventory_dialog.buy_item_from_list(selected_hero, trades)
+    id = [idx for idx, t in enumerate(trades) if t.item_name == bought_item_name]
+    trades.pop(id)
+    bought_something = bought_item_name is not None
+    while step.allow_multiple_buy and bought_item_name is not None and trades:
+        bought_item_name = inventory_dialog.buy_item_from_list(selected_hero, trades)
+        id = [idx for idx, t in enumerate(trades) if t.item_name == bought_item_name]
+        trades.pop(id)
+    if bought_something:
+        return step.yes
+    return step.no
+
+
 def perform_step(company:Company, step:RegionEventStep, region_name:str) -> int | None | RegionJump:
     if step.is_fight:
-        return fighting_dialog.perform_fight(company, step, region_name)
+        if step.is_single_hero:
+            hero = select_hero(company, step)
+            if hero is None:
+                return step.next_step
+            return fighting_dialog.perform_fight([hero], step, region_name)
+        return fighting_dialog.perform_fight(company.heroes, step, region_name)
     if step.is_reward:
         return perform_reward(company, step)
     if step.decision:
@@ -112,6 +170,10 @@ def perform_step(company:Company, step:RegionEventStep, region_name:str) -> int 
         return perform_trap(company, step)
     if step.is_steal:
         return inventory_dialog.perform_steal(company, step)
+    if step.is_skill_check:
+        return perform_skill_check(company, step)
+    if step.is_trade:
+        return preform_trade(company, step)
     if step.text:
         print(step.text)
     if step.money_loss:

@@ -26,6 +26,22 @@ The step with id 0 is the entry point of the event.
 
 "next-step" is the default step id to go to if "yes", "no", "fight-win" or similar are not set.
 
+### Hero Selection
+
+```json
+{  
+  "random-hero":[1,2],
+  "required-races":["Mensch"],
+  "required-profession":["Kaempfer"]
+}
+```
+
+- random-hero: list of eligable heros
+- required-races: list of eligable races
+- required-profession: list of eligable profession
+
+if no suitable hero is found the event will lead to "next-step"
+
 ### Decision
 
 ```json
@@ -58,7 +74,11 @@ The step with id 0 is the entry point of the event.
   "fight-thief-count":1,
   "fight-win":1,
   "fight-tie":2,
-  "fight-loose":3
+  "fight-loose":3,  
+  "is-single-hero":false,
+  "fight-melee":false,
+  "fight-ranged":false,
+  "random-hero":[1,2]
 }
 ```
 
@@ -74,6 +94,10 @@ The step with id 0 is the entry point of the event.
 - fight-win: step id to go to if the player wins
 - fight-tie: step id to go to if the fight ends in a tie
 - fight-loose: step-id to go to if the player lost
+- is-single-hero: flag whether one single hero has to fight or not
+- fight-melee: flag whether fight is forced to be melee
+- fight-ranged: flag whether fight is forced to be ranged
+- random-hero: if hero is 
 
 ### Learn Skills
 
@@ -167,6 +191,29 @@ The step with id 0 is the entry point of the event.
   - draw-d6-count: number of dices rolled, also supported are d10 and d100
   - draw-base: value that is added to the dice roll number, can be negative
 
+### Skill Check
+
+```json
+{
+  "id":0,
+  "text":"You get robbed.",
+  "is-skill-check":true,
+  "base-skill-check":{
+    "is-strength":true,
+    "check-modifier":-1,
+    "check-types":["strength"]
+    },
+}
+```
+
+- is-skill-check: flag whether step is a skill check or not
+- base-skill-check: object about the skill check
+  - is-strength: flag whether skill aims on strength or not, available for all base skills
+  - check-modifier: modifier for the skill check
+  - check-types: optional list of 'types'
+
+just as [BaseSkillCheck](../function.md#base-skill-check)
+
 ### Steals
 
 ```json
@@ -186,3 +233,28 @@ The step with id 0 is the entry point of the event.
 - steal-types: list of slots the thief might steal from
 - can-miss: flag whether or not it can happen that the thief does not steal anything (as he looks in the wrong place)
 - backpack-parts: flag whether the thief steals parts from within backpack or the whole backpack
+
+### Trades
+
+```json
+{
+  "id":0,
+  "text":"Ein Dolchhaendler bietet einen Dolch zum festlichen Preis von 5 Geldstuecken an.",
+  "is-trade":true,
+  "allow-money-move":true,
+  "allow-multiple-buy":true,
+  "trades":[
+    {
+      "item-name":"Dolch",
+      "money":5
+    }
+  ]
+}
+```
+
+- is-trade: flag signaling that this is a trade step
+- allow-money-move: flag whether it is allowed to move money before trading or not
+- allow-multiple-buy: flag whether the player is allowed to buy multiple items
+- trades: list of trades available in this step
+  - item-name: name of the item in trade
+  - money: money to pay in trade
