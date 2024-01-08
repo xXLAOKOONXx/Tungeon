@@ -26,9 +26,9 @@ def determine_is_melee(heroes:list[Hero]):
             condition.hero_condition[hero.name] = HeroCondition()
         condition.get_hero_condition(hero.name).is_melee = determine_hero_is_melee(hero)
 
-def fight_round(company:Company, fight:RegionEventStep, region_name:str) -> fightingsystem.FightRoundResult:
+def fight_round(heroes:list[Hero], fight:RegionEventStep, region_name:str) -> fightingsystem.FightRoundResult:
     enemy_strength = fightingsystem.draw_enemy_strength(fight)
-    fighting_heroes = [hero for hero in company.heroes if fightingsystem.is_allowed_fighting(hero, condition.get_hero_condition(hero.name).is_melee)]
+    fighting_heroes = [hero for hero in heroes if fightingsystem.is_allowed_fighting(hero, condition.get_hero_condition(hero.name).is_melee)]
     hero_base = fightingsystem.calculate_heroes_base_damage(fighting_heroes)
     
     roll_strength = 0
@@ -38,10 +38,10 @@ def fight_round(company:Company, fight:RegionEventStep, region_name:str) -> figh
         roll_strength += hero_roll
 
     hero_strength = hero_base + roll_strength
-    fight_result = fightingsystem.calculate_fight_round(hero_strength, fightingsystem.calculate_hero_resistance(company.heroes[0]), enemy_strength, fight.fight_enemy_resistance)
+    fight_result = fightingsystem.calculate_fight_round(hero_strength, fightingsystem.calculate_hero_resistance(heroes[0]), enemy_strength, fight.fight_enemy_resistance)
     return fight_result
 
-def perform_fight(company:Company, fight:RegionEventStep, region_name:str) -> int | None:
+def perform_fight(heroes:list[Hero], fight:RegionEventStep, region_name:str) -> int | None:
     '''
     Returns:
     - continuation-id(int), None if there is no continuation-number
@@ -55,17 +55,17 @@ def perform_fight(company:Company, fight:RegionEventStep, region_name:str) -> in
     condition.is_forced = fight.is_forced
     condition.enemy_count = fight.fight_enemy_count
     if fight.fight_melee:
-        for hero in company.heroes:
+        for hero in heroes:
             condition.get_hero_condition(hero.name).is_melee = True
     elif fight.fight_ranged:
-        for hero in company.heroes:
+        for hero in heroes:
             condition.get_hero_condition(hero.name).is_melee = False
     else:
-        determine_is_melee(company.heroes)
+        determine_is_melee(heroes)
     for i in range(0,3):
         condition.fight_round = i + 1
         print(game_config().language_package.round_msg.format(round=i+1))
-        fight_result = fight_round(company, fight, region_name)
+        fight_result = fight_round(heroes, fight, region_name)
         if not fight_result.is_tie:
             break
     if fight_result.is_tie:
@@ -78,7 +78,7 @@ def perform_fight(company:Company, fight:RegionEventStep, region_name:str) -> in
         return fight.fight_win or fight.next_step
     if fight_result.is_loose:
         print(game_config().language_package.fight_loose)
-        applied_wounds = fightingsystem.apply_damage_on_players(company.heroes, strength_delta=fight_result.strength_delta)
+        applied_wounds = fightingsystem.apply_damage_on_players(heroes, strength_delta=fight_result.strength_delta)
         print(game_config().language_package.receive_wounds.format(wounds=applied_wounds))
         reset_condition()
         return fight.fight_loose or fight.next_step
