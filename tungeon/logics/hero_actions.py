@@ -1,3 +1,4 @@
+import random
 from tungeon.config.schema.base_skill_check import BaseSkillCheck
 from tungeon.config.schema.functionality import Functionality
 from tungeon.config.schema.region_event import RegionEventStep
@@ -44,6 +45,15 @@ def do_step_check(hero:Hero, step:RegionEventStep) -> bool:
         remove_base_check_condition()
         return skill_check_result
     return True
+
+
+def pop_random_poison(target_hero:Hero, poison_types:list[str]|None) -> bool:
+    poison_idx = [idx for idx, p in enumerate(target_hero.poisons) if not poison_types or any(any([pt in hpt for hpt in poison_types]) for pt in p.poison_types)]
+    if not poison_idx:
+        return False
+    pop_idx = random.sample(poison_idx, 1)[0]
+    target_hero.poisons.pop(pop_idx)
+    return True
     
 
 def apply_prepare_functionality(hero:Hero, target_hero:Hero, functionality:Functionality):
@@ -53,6 +63,10 @@ def apply_prepare_functionality(hero:Hero, target_hero:Hero, functionality:Funct
         remove_base_check_condition()
         if not skill_check_result:
             return
+    
+    if functionality.heals_poison:
+        for _ in range(0,functionality.poison_count_cleaning or len(target_hero.poisons)):
+            pop_random_poison(target_hero, functionality.healing_poison_types)
 
     round_effect = RoundEffect(
         round_count=0 + (functionality.additional_rounds or 0),
@@ -61,6 +75,7 @@ def apply_prepare_functionality(hero:Hero, target_hero:Hero, functionality:Funct
         bonus_speed=functionality.speed_bonus,
         bonus_intelligence=functionality.intelligence_bonus,
         bonus_melee_damage=functionality.fight_flat_bonus if functionality.fight_type=='melee' or functionality.fight_type is None else 0,
-        bonus_ranged_damage=functionality.fight_flat_bonus if functionality.fight_type=='ranged' or functionality.fight_type is None else 0
+        bonus_ranged_damage=functionality.fight_flat_bonus if functionality.fight_type=='ranged' or functionality.fight_type is None else 0,
+        poison_type_preventions=functionality.poison_type_preventions or []
     )
     target_hero.round_effects.append(round_effect)

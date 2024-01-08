@@ -10,6 +10,7 @@ class RoundEffect:
     bonus_intelligence:int = 0
     bonus_melee_damage:int = 0
     bonus_ranged_damage:int = 0
+    poison_type_preventions:list[str] = []
 
     def __dict__(self):
         return {
@@ -19,7 +20,8 @@ class RoundEffect:
             'bonus-speed':self.bonus_speed,
             'bonus-intelligence':self.bonus_intelligence,
             'bonus-melee-damage':self.bonus_melee_damage,
-            'bonus-ranged-damage':self.bonus_ranged_damage
+            'bonus-ranged-damage':self.bonus_ranged_damage,
+            'poison-type-preventions':self.poison_type_preventions
         }
     
     @classmethod
@@ -31,5 +33,6 @@ class RoundEffect:
             bonus_speed=json_data.get('bonus-speed'),
             bonus_intelligence=json_data.get('bonus-intelligence'),
             bonus_melee_damage=json_data.get('bonus-melee-damage'),
-            bonus_ranged_damage=json_data.get('bonus-ranged-damage')
+            bonus_ranged_damage=json_data.get('bonus-ranged-damage'),
+            poison_type_preventions=json_data.get('poison-type-preventions')
         )

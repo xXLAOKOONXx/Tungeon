@@ -142,6 +142,13 @@ def perform_trade(company:Company, step:RegionEventStep) -> int | None:
         return step.yes
     return step.no
 
+def perform_poisoning(company:Company, step:RegionEventStep) -> int | None:
+    selected_hero = select_hero(company, step)
+    if any([any(t in re.poison_type_preventions for re in selected_hero.round_effects) for t in step.poison.poison_types]):
+        return step.no
+    selected_hero.poisons.append(step.poison)
+    return step.yes
+
 
 def perform_step(company:Company, step:RegionEventStep, region_name:str) -> int | None | RegionJump:
     if step.is_fight:
@@ -173,7 +180,9 @@ def perform_step(company:Company, step:RegionEventStep, region_name:str) -> int 
     if step.is_skill_check:
         return perform_skill_check(company, step)
     if step.is_trade:
-        return preform_trade(company, step)
+        return perform_trade(company, step)
+    if step.is_poison:
+        return perform_poisoning(company, step)
     if step.text:
         print(step.text)
     if step.money_loss:
